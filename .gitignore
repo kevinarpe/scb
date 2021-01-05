@@ -1,0 +1,31 @@
+# Vi
+.*.swp
+.sw*
+
+# Maven
+target/
+*.ser
+*.ec
+
+# IntelliJ Idea
+.idea/
+out/
+*.ipr
+*.iws
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+.metadata/
+
+# TestNG
+test-output/
+
+# Generated Test Data
+src/test/resources/generated/
+
+# My stuff...
+do_not_commit/
+log/
