@@ -1,6 +1,6 @@
 # README
 
-Author: Kevin Connor ARPE <kevinarpe@gmail.com>
+Author: Kevin Connor ARPE (<kevinarpe@gmail.com>)
 
 # Question #1: Cache
 
