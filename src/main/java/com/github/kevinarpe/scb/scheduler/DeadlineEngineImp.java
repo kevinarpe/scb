@@ -35,7 +35,7 @@ implements DeadlineEngine {
         this.requestId_To_DeadlineEpochMillis_Map = new HashMap<>();
     }
 
-    // Time complexity: O(log n) + O(1) = O(log n) -> logarithmic
+    // Time complexity: O(log n) + O(1) + O(1) = O(log n) -> logarithmic
     @Override
     public long schedule(final long deadlineEpochMillis) {
 
@@ -49,6 +49,7 @@ implements DeadlineEngine {
             deadlineEpochMillis_To_RequestIdSet_Map.computeIfAbsent(deadlineEpochMillis,
                 any -> new HashSet<>());
 
+        // Time complexity: O(1)
         requestIdSet.add(requestId);
 
         // Time complexity: O(1)
@@ -63,7 +64,7 @@ implements DeadlineEngine {
         }
     }
 
-    // Time complexity: O(1) + O(log n) = O(log n) -> logarithmic
+    // Time complexity: O(1) + O(log n) + O(1) = O(log n) -> logarithmic
     @Override
     public boolean cancel(final long requestId) {
 
@@ -80,6 +81,7 @@ implements DeadlineEngine {
             deadlineEpochMillis_To_RequestIdSet_Map.computeIfAbsent(deadlineEpochMillis,
                 any -> new HashSet<>());
 
+        // Time complexity: O(1)
         requestIdSet.remove(requestId);
         return true;
     }
