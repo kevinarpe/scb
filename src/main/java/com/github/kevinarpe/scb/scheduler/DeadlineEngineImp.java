@@ -3,12 +3,12 @@ package com.github.kevinarpe.scb.scheduler;
 import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Objects;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.function.Consumer;
 
 /**
@@ -25,7 +25,7 @@ implements DeadlineEngine {
     static final long MIN_REQUEST_ID = 1;
     private long nextRequestId;
     // These two data structures are mirrors of one another.
-    private final TreeMap<Long, TreeSet<Long>> deadlineEpochMillis_To_RequestIdSet_Map;
+    private final TreeMap<Long, HashSet<Long>> deadlineEpochMillis_To_RequestIdSet_Map;
     private final HashMap<Long, Long> requestId_To_DeadlineEpochMillis_Map;
 
     public DeadlineEngineImp() {
@@ -45,9 +45,9 @@ implements DeadlineEngine {
         ++nextRequestId;
 
         // Time complexity: O(log n)
-        final TreeSet<Long> requestIdSet =
+        final HashSet<Long> requestIdSet =
             deadlineEpochMillis_To_RequestIdSet_Map.computeIfAbsent(deadlineEpochMillis,
-                any -> new TreeSet<>(Comparator.naturalOrder()));
+                any -> new HashSet<>());
 
         requestIdSet.add(requestId);
 
@@ -76,9 +76,9 @@ implements DeadlineEngine {
             return false;
         }
         // Time complexity: O(log n)
-        final TreeSet<Long> requestIdSet =
+        final HashSet<Long> requestIdSet =
             deadlineEpochMillis_To_RequestIdSet_Map.computeIfAbsent(deadlineEpochMillis,
-                any -> new TreeSet<>(Comparator.naturalOrder()));
+                any -> new HashSet<>());
 
         requestIdSet.remove(requestId);
         return true;
@@ -101,15 +101,15 @@ implements DeadlineEngine {
         // required, not just less-than.
         final boolean inclusive = true;
         // Time complexity: O(log n)
-        final NavigableMap<Long, TreeSet<Long>> lessEqualDeadlineMap =
+        final NavigableMap<Long, HashSet<Long>> lessEqualDeadlineMap =
             deadlineEpochMillis_To_RequestIdSet_Map.headMap(nowEpochMillis, inclusive);
 
         int remainPollCount = maxPollCount;
         int count = 0;
 BREAK_LABEL:
-        for (final Map.Entry<Long, TreeSet<Long>> entry : lessEqualDeadlineMap.entrySet()) {
+        for (final Map.Entry<Long, HashSet<Long>> entry : lessEqualDeadlineMap.entrySet()) {
 
-            final TreeSet<Long> requestIdSet = entry.getValue();
+            final HashSet<Long> requestIdSet = entry.getValue();
             for (final Iterator<Long> requestIdIter = requestIdSet.iterator(); requestIdIter.hasNext() ; ) {
 
                 final long requestId = requestIdIter.next();
